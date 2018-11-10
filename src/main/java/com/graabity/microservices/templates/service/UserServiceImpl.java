@@ -13,20 +13,22 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     final private List<AppUser> users = Arrays.asList(
-            new AppUser(1, "Suman", "12345", "ADMIN"),
-            new AppUser(2, "Rati", "12345", "POWERUSER"),
-            new AppUser(3, "Test", "12345", "USER,POWERUSER")
+            new AppUser(1, "Suman", "12345", "ROLE_ADMIN"),
+            new AppUser(2, "Rati", "12345", "ROLE_POWERUSER"),
+            new AppUser(3, "Test", "12345", "ROLE_USER,ROLE_POWERUSER")
     );
 
 
     @Override
     public JwtUser authenticate(LoginRequest request) {
+        System.out.println("Verifying the user " );
         for(AppUser appUser : users){
-            if(appUser.equals(request.getUserName()) && appUser.equals(request.getPassword()) ){
+            if(appUser.getUsername().equals(request.getUserName()) && appUser.getPassword().equals(request.getPassword()) ){
                 JwtUser jwtUser = new JwtUser();
                 jwtUser.setUserName(appUser.getUsername());
                 jwtUser.setId(appUser.getId());
                 jwtUser.setRole(appUser.getRole());
+                return jwtUser;
             }
         }
         throw new UsernameNotFoundException("Invalid userName and Password combination");
