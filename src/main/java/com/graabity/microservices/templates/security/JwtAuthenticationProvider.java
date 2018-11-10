@@ -17,6 +17,9 @@ import java.util.List;
 @Component
 public class JwtAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
+    private static String ROLE_PREFIX = "ROLE_";
+
+
     @Autowired
     private JwtValidator validator;
 
@@ -37,8 +40,7 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
             throw new RuntimeException("JWT Token is incorrect");
         }
 
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList(jwtUser.getRole());
+        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(ROLE_PREFIX+jwtUser.getRole());
         return new JwtUserDetails(jwtUser.getUserName(), jwtUser.getId(),
                 token,
                 grantedAuthorities);
