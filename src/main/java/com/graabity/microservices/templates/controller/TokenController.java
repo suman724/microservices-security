@@ -23,7 +23,7 @@ public class TokenController {
     }
 
     @PostMapping
-    public String login(@RequestBody final LoginRequest authenticationRequest) {
+    public String login(@RequestBody final LoginRequest authenticationRequest) throws Exception{
 
         JwtUser jwtUser = userService.authenticate(authenticationRequest);
         return jwtGenerator.generate(jwtUser);

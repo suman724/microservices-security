@@ -4,13 +4,20 @@ import com.graabity.microservices.templates.model.JwtUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
+import java.util.Calendar;
 
 @Component
 public class JwtGenerator {
 
 
-    public String generate(JwtUser jwtUser) {
+    @Autowired
+    JwtPrivateKeyProvider keyProvider;
+
+    public String generate(JwtUser jwtUser) throws Exception{
 
 
         Claims claims = Jwts.claims()
@@ -18,10 +25,18 @@ public class JwtGenerator {
         claims.put("userId", String.valueOf(jwtUser.getId()));
         claims.put("role", jwtUser.getRole());
 
+//        return Jwts.builder()
+//                .setClaims(claims)
+//                .signWith(SignatureAlgorithm.HS512, "youtube")
+//                .compact();
 
+        Key key = keyProvider.getSigningKey();
+        Calendar expires = Calendar.getInstance();
+        expires.add(Calendar.HOUR, 24);
         return Jwts.builder()
                 .setClaims(claims)
-                .signWith(SignatureAlgorithm.HS512, "youtube")
+                .setExpiration( expires.getTime())
+                .signWith(SignatureAlgorithm.RS512, key)
                 .compact();
     }
 }
