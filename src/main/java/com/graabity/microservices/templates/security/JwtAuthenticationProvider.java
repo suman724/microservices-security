@@ -30,13 +30,10 @@ public class JwtAuthenticationProvider extends AbstractUserDetailsAuthentication
 
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) usernamePasswordAuthenticationToken;
         String token = jwtAuthenticationToken.getToken();
-
         JwtUser jwtUser = validator.validate(token);
-
         if (jwtUser == null) {
             throw new RuntimeException("JWT Token is incorrect");
         }
-
         List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(jwtUser.getRole());
         return new JwtUserDetails(jwtUser.getUserName(), jwtUser.getId(),
                 token,

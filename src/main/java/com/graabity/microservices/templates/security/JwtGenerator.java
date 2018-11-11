@@ -15,9 +15,9 @@ public class JwtGenerator {
 
 
     @Autowired
-    JwtPrivateKeyProvider keyProvider;
+    private JwtPrivateKeyProvider keyProvider;
 
-    public String generate(JwtUser jwtUser) throws Exception{
+    public String generate(JwtUser jwtUser) {
 
 
         Claims claims = Jwts.claims()
@@ -25,7 +25,7 @@ public class JwtGenerator {
         claims.put("userId", String.valueOf(jwtUser.getId()));
         claims.put("role", jwtUser.getRole());
 
-        Key key = keyProvider.getSigningKey();
+        Key key = keyProvider.getPrivateKey();
         Calendar expires = Calendar.getInstance();
         expires.add(Calendar.HOUR, 24);
         return Jwts.builder()
