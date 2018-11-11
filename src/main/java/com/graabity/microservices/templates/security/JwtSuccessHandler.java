@@ -10,8 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtSuccessHandler implements AuthenticationSuccessHandler{
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+        //logger.info("Successfully authenticated the user principal {} with name {}", authentication.getPrincipal(), authentication.getName());
+        //logger.info("Successfully authenticated the user principal {} with name {}", authentication.getPrincipal(), authentication.getName());
         System.out.println("Successfully Authentication");
+
     }
 }
