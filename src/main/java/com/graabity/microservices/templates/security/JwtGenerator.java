@@ -25,11 +25,6 @@ public class JwtGenerator {
         claims.put("userId", String.valueOf(jwtUser.getId()));
         claims.put("role", jwtUser.getRole());
 
-//        return Jwts.builder()
-//                .setClaims(claims)
-//                .signWith(SignatureAlgorithm.HS512, "youtube")
-//                .compact();
-
         Key key = keyProvider.getSigningKey();
         Calendar expires = Calendar.getInstance();
         expires.add(Calendar.HOUR, 24);
