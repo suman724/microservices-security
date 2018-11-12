@@ -3,6 +3,8 @@ package com.graabity.microservices.templates.service;
 import com.graabity.microservices.templates.model.JwtUser;
 import com.graabity.microservices.templates.model.LoginRequest;
 import com.graabity.microservices.templates.model.app.AppUser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger logger = LogManager.getLogger(UserService.class);
+
 
     final private List<AppUser> users = Arrays.asList(
             new AppUser(1, "Suman", "12345", "ROLE_ADMIN"),
@@ -21,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JwtUser authenticate(LoginRequest request) {
-        System.out.println("Verifying the user " );
+        logger.info("Verifying the user {}",request.getUserName() );
         for(AppUser appUser : users){
             if(appUser.getUsername().equals(request.getUserName()) && appUser.getPassword().equals(request.getPassword()) ){
                 JwtUser jwtUser = new JwtUser();
